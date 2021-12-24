@@ -1,13 +1,27 @@
-package com.pcs.apptoko
+package com.pcs.apptoko.adapter
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageButton
 import android.widget.TextView
+import android.widget.Toast
+import androidx.navigation.findNavController
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.RecyclerView
+import com.pcs.apptoko.LoginActivity
+import com.pcs.apptoko.R
+import com.pcs.apptoko.api.BaseRetrofit
 import com.pcs.apptoko.response.produk.Produk
+import com.pcs.apptoko.response.produk.ProdukResponsePost
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class ProdukAdapter(val listProduk: List<Produk>):RecyclerView.Adapter<ProdukAdapter.ViewHolder>() {
+
+    private val api by lazy { BaseRetrofit().endPoint}
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         val view = LayoutInflater.from(parent.context).inflate(R.layout.item_produk,parent,false)
@@ -18,6 +32,29 @@ class ProdukAdapter(val listProduk: List<Produk>):RecyclerView.Adapter<ProdukAda
         val produk = listProduk[position]
         holder.txtNamaProduk.text = produk.nama
         holder.txtHarga.text = produk.harga
+
+        val token = LoginActivity.sessionManager.getString("TOKEN")
+
+        holder.btnDelete.setOnClickListener {
+            Toast.makeText(holder.itemView.context, produk.nama.toString(), Toast.LENGTH_LONG).show()
+
+            api.deleteProduk(token.toString(),produk.id.toInt()).enqueue(object :
+                Callback<ProdukResponsePost> {
+                override fun onResponse(
+                    call: Call<ProdukResponsePost>,
+                    response: Response<ProdukResponsePost>,
+                ) {
+                    Log.d("Data", response.toString())
+                    Toast.makeText(holder.itemView.context, "Data di Hapus",Toast.LENGTH_LONG).show()
+
+                    holder.itemView.findNavController().navigate(R.id.produkFragment)
+                }
+
+                override fun onFailure(call: Call<ProdukResponsePost>, t: Throwable) {
+                    Log.e("Data", t.toString())
+                }
+            })
+        }
     }
 
     override fun getItemCount(): Int {
@@ -27,5 +64,6 @@ class ProdukAdapter(val listProduk: List<Produk>):RecyclerView.Adapter<ProdukAda
     class ViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView){
         val txtNamaProduk = itemView.findViewById(R.id.txtNamaProduk) as TextView
         val txtHarga = itemView.findViewById(R.id.txtHarga) as TextView
+        val btnDelete = itemView.findViewById(R.id.btnDelete) as ImageButton
     }
 }

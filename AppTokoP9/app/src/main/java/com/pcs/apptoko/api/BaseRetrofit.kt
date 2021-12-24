@@ -1,9 +1,12 @@
 package com.pcs.apptoko.api
 
 import okhttp3.OkHttpClient
+import okhttp3.Protocol
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
+import java.util.*
+
 
 class BaseRetrofit {
     val endPoint : ApiEndPoint
@@ -13,6 +16,7 @@ class BaseRetrofit {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val client = OkHttpClient.Builder()
+            .protocols(Collections.singletonList(Protocol.HTTP_1_1))
             .addInterceptor(interceptor)
             .build()
 

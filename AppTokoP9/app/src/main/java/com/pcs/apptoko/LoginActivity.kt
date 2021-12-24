@@ -57,6 +57,7 @@ class LoginActivity : AppCompatActivity() {
 
                         sessionManager.saveString("TOKEN","Bearer "+token)
                         sessionManager.saveBoolean("LOGIN_STATUS",true)
+                        sessionManager.saveString("ADMIN_ID",response.body()!!.data.admin.id.toString())
 
                         val moveIntent = Intent(this@LoginActivity,MainActivity::class.java)
                         startActivity(moveIntent)
