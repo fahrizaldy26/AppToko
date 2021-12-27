@@ -28,6 +28,17 @@ interface ApiEndPoint {
     ) : Call<ProdukResponsePost>
 
     @FormUrlEncoded
+    @HTTP(method = "PUT", path = "produk", hasBody = true)
+    fun putProduk(
+        @Header("Authorization") token : String,
+        @Field("id") id : Int,
+        @Field("admin_id") admin_id : Int,
+        @Field("nama") nama : String,
+        @Field("harga") harga : Int,
+        @Field("stok") stok : Int,
+    ) : Call<ProdukResponsePost>
+
+    @FormUrlEncoded
     @HTTP(method = "DELETE", path = "produk", hasBody = true)
     fun deleteProduk(
         @Header("Authorization") token : String,

@@ -16,12 +16,12 @@ class BaseRetrofit {
         interceptor.level = HttpLoggingInterceptor.Level.BODY
 
         val client = OkHttpClient.Builder()
-            .protocols(Collections.singletonList(Protocol.HTTP_1_1))
+            //.protocols(Collections.singletonList(Protocol.HTTP_1_1))
             .addInterceptor(interceptor)
             .build()
 
         val retrofit = Retrofit.Builder()
-            .baseUrl("https://pcs.donnipra.com/index.php/api_pcs/")
+            .baseUrl("http://192.168.1.8:80/CI-PCS/index.php/Api_pcs/")
             .client(client)
             .addConverterFactory(GsonConverterFactory.create())
             .build()

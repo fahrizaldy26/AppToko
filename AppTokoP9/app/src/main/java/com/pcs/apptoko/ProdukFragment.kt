@@ -34,8 +34,12 @@ class ProdukFragment : Fragment() {
 
         val btnTambah = view.findViewById<Button>(R.id.btnTambah)
         btnTambah.setOnClickListener{
-            //Toast.makeText(activity?.applicationContext, "Click", Toast.LENGTH_LONG).show()
-            findNavController().navigate(R.id.produkFormFragment)
+            Toast.makeText(activity?.applicationContext, "Click", Toast.LENGTH_LONG).show()
+
+            val bundle = Bundle()
+            bundle.putString("status", "tambah")
+
+            findNavController().navigate(R.id.produkFormFragment,bundle)
         }
 
         return view
